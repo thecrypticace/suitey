@@ -7,9 +7,11 @@ use TheCrypticAce\Suitey\Steps;
 
 class SeederTest extends TestCase
 {
-    /** @!test */
+    /** @test */
     public function it_can_run_a_given_seeder()
     {
+        $this->markTestIncomplete("TODO: Artisan CLI not set up for testing yet");
+
         $this->suitey->add(new Steps\RunSeeder("TestSeeder"));
 
         $result = $this->artisan("test");

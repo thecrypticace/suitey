@@ -7,9 +7,11 @@ use TheCrypticAce\Suitey\Steps;
 
 class MigrateTest extends TestCase
 {
-    /** @!test */
+    /** @test */
     public function it_can_migrate_the_default_database()
     {
+        $this->markTestIncomplete("TODO: Artisan CLI not set up for testing yet");
+
         $this->suitey->add(new Steps\Migrate);
 
         $result = $this->artisan("test");
@@ -22,9 +24,11 @@ class MigrateTest extends TestCase
         // Check for database tables
     }
 
-    /** @!test */
+    /** @test */
     public function it_can_migrate_a_custom_database()
     {
+        $this->markTestIncomplete("TODO: Artisan CLI not set up for testing yet");
+
         $this->suitey->add(new Steps\Migrate("foo"));
 
         $result = $this->artisan("test");
@@ -37,9 +41,11 @@ class MigrateTest extends TestCase
         // Check for database tables
     }
 
-    /** @!test */
+    /** @test */
     public function it_can_migrate_a_custom_database_with_a_custom_path()
     {
+        $this->markTestIncomplete("TODO: Artisan CLI not set up for testing yet");
+
         $this->suitey->add(new Steps\Migrate("bar", "database/migrations/bar"));
 
         $result = $this->artisan("test");
