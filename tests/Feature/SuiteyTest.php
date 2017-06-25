@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Closure;
 use Tests\TestCase;
 use TheCrypticAce\Suitey\IO;
+use TheCrypticAce\Suitey\Process;
 use TheCrypticAce\Suitey\Steps\Step;
 
 class SuiteyTest extends TestCase
@@ -65,6 +66,36 @@ class SuiteyTest extends TestCase
     }
 
     /** @test */
+    public function a_failing_step_prevents_further_steps_from_running()
+    {
+        $this->suitey->add($step1 = $this->failingStep());
+        $this->suitey->add($step2 = $this->successfulStep());
+
+        $result = $this->artisan("test");
+        $result->assertStatus(1);
+        $result->assertStepOutput([
+            "[1/3] failing step",
+        ]);
+
+        $this->assertFalse($step2->hasRun);
+    }
+
+    /** @test */
+    public function a_failing_process_prevents_further_steps_from_running()
+    {
+        $this->suitey->add($step1 = $this->failingProcessStep());
+        $this->suitey->add($step2 = $this->successfulStep());
+
+        $result = $this->artisan("test");
+        $result->assertStatus(1);
+        $result->assertStepOutput([
+            "[1/3] failing process step",
+        ]);
+
+        $this->assertFalse($step2->hasRun);
+    }
+
+    /** @test */
     public function stub()
     {
         $this->assertTrue(true);
@@ -73,6 +104,20 @@ class SuiteyTest extends TestCase
     private function successfulStep()
     {
         return $this->step("successful step");
+    }
+
+    private function failingStep()
+    {
+        return $this->step("failing step", function () {
+            return 1;
+        });
+    }
+
+    private function failingProcessStep()
+    {
+        return $this->step("failing process step", function () {
+            Process::binary("/usr/bin/idontexist")->run();
+        });
     }
 
     private function step($name, Closure $code = null)
