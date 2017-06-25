@@ -45,7 +45,7 @@ class ArtisanResult
     private function stepLines()
     {
         foreach (explode("\n", $this->output) as $index => $actualLine) {
-            if ($actualLine === "" || substr($actualLine, 0, 7) === "PHPUnit") {
+            if (substr($actualLine, 0, 1) !== "[") {
                 break;
             }
 
