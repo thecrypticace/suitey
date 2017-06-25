@@ -64,7 +64,7 @@ class SuiteyTest extends TestCase
         ]);
     }
 
-    /** @!test */
+    /** @test */
     public function stub()
     {
         $this->assertTrue(true);
