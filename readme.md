@@ -1,5 +1,5 @@
 # Suitey
-## Run code before and after you run phpunit
+Run code before and after you run phpunit
 
 <p align="center">
 <a href="https://travis-ci.org/thecrypticace/suitey"><img src="https://travis-ci.org/thecrypticace/suitey.svg" alt="Build Status"></a>
