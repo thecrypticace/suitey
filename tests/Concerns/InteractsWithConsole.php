@@ -13,10 +13,6 @@ trait InteractsWithConsole
 
         $status = $console->call($command, $parameters, $output = new BufferedOutput);
 
-        $result = new ArtisanResult($parameters, $output->fetch(), $status);
-
-        return tap($result, function ($result) {
-            $result->dumpIfFailed();
-        });
+        return new ArtisanResult($parameters, $output->fetch(), $status);
     }
 }
