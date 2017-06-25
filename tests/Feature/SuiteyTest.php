@@ -50,6 +50,20 @@ class SuiteyTest extends TestCase
         $this->assertFalse($step->hasRun);
     }
 
+    /** @test */
+    public function it_can_skip_non_phpunit_options()
+    {
+        $_SERVER["argv"] = ["artisan", "test", "--", "--filter", "stub"];
+
+        $result = $this->artisan("test", [
+            "--test-only" => true,
+        ]);
+        $result->assertStatus(0);
+        $result->assertStepOutput([
+            "[1/1] Run PHPUnit",
+        ]);
+    }
+
     /** @!test */
     public function stub()
     {
