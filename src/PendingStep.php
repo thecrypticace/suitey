@@ -19,11 +19,6 @@ class PendingStep implements Step
         return $this->step->name();
     }
 
-    public function categories()
-    {
-        return $this->step->categories();
-    }
-
     public function handle(IO $io, Closure $next)
     {
         $io->output()->writeln(
