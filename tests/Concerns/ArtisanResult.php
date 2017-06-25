@@ -24,11 +24,7 @@ class ArtisanResult
 
     public function assertStepOutput($expectedLines)
     {
-        foreach (explode("\n", $this->output) as $index => $actualLine) {
-            if ($actualLine === "" || substr($actualLine, 0, 7) === "PHPUnit") {
-                break;
-            }
-
+        foreach ($this->stepLines() as $index => $actualLine) {
             Assert::assertEquals($expectedLines[$index], $actualLine);
         }
     }
@@ -44,5 +40,16 @@ class ArtisanResult
     public function dumpIfFailed()
     {
         return $this->status === 0 ? $this : $this->dump();
+    }
+
+    private function stepLines()
+    {
+        foreach (explode("\n", $this->output) as $index => $actualLine) {
+            if ($actualLine === "" || substr($actualLine, 0, 7) === "PHPUnit") {
+                break;
+            }
+
+            yield $index => $actualLine;
+        }
     }
 }
