@@ -20,7 +20,7 @@ class Argv
 
     public function slice($index, $length = null)
     {
-        return new static($this->argv->slice($index, $length));
+        return new static($this->argv->slice($index, $length)->values());
     }
 
     public function options()
