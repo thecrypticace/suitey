@@ -22,12 +22,12 @@ class SuiteyTest extends TestCase
     /** @test */
     public function it_can_add_steps_to_run_before_phpunit()
     {
-        $this->suitey->add($step = $this->fakeStep());
+        $this->suitey->add($step = $this->successfulStep());
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
         $result->assertStepOutput([
-            "[1/2] foo",
+            "[1/2] successful step",
             "[2/2] Run PHPUnit",
         ]);
 
@@ -37,7 +37,7 @@ class SuiteyTest extends TestCase
     /** @test */
     public function it_can_run_only_phpunit_if_requested()
     {
-        $this->suitey->add($step = $this->fakeStep());
+        $this->suitey->add($step = $this->successfulStep());
 
         $result = $this->artisan("test", [
             "--test-only" => true,
@@ -70,21 +70,34 @@ class SuiteyTest extends TestCase
         $this->assertTrue(true);
     }
 
-    private function fakeStep()
+    private function successfulStep()
     {
-        return new class implements Step {
+        return $this->step("successful step");
+    }
+
+    private function step($name, Closure $code = null)
+    {
+        $code = $code ?? function () {};
+
+        return new class ($name, $code) implements Step {
             public $hasRun = false;
+
+            public function __construct($name, $code)
+            {
+                $this->name = $name;
+                $this->code = $code;
+            }
 
             public function name()
             {
-                return "foo";
+                return $this->name;
             }
 
             public function handle(IO $io, Closure $next)
             {
                 $this->hasRun = true;
 
-                return $next($io);
+                return ($this->code)($io, $next) ?? $next($io);
             }
         };
     }
