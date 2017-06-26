@@ -50,12 +50,19 @@ output that looks like this:
 
 Lets fix that.
 
-In your `AppServiceProvider` (or, better yet, a dedicated `TestingServiceProvider`) put this in the boot method:
+In your `AppServiceProvider` (or, better yet, a dedicated `TestingServiceProvider`) add the `Migrate` step by using the `Suitey` facade.
 
 ```php
 Suitey::add([
     new \TheCrypticAce\Suitey\Steps\Migrate,
 ]);
+```
+
+*Note: You may resolve the class through the container instead of using the facade if your wish.*
+
+*Note: When using the facade don't forget to "use" it at top of your service provider:*
+```php
+use \TheCrypticAce\Suitey\Laravel\Suitey;
 ```
 
 Your migrations will now run _before_ your test runs. Don't forget to remove the `DatabaseMigrations` trait from your tests.
