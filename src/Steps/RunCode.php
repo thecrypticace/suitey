@@ -15,7 +15,6 @@ class RunCode implements Step
     {
         $this->name = $name;
         $this->code = $code;
-        $this->hasRun = false;
     }
 
     public function name()
@@ -25,8 +24,6 @@ class RunCode implements Step
 
     public function handle(IO $io, Closure $next)
     {
-        $this->hasRun = true;
-
         return ($this->code)($io, $next) ?? $next($io);
     }
 }
