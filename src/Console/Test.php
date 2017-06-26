@@ -2,10 +2,14 @@
 
 namespace TheCrypticAce\Suitey\Console;
 
+use Exception;
+use Throwable;
 use TheCrypticAce\Suitey\IO;
 use Illuminate\Console\Command;
 use TheCrypticAce\Suitey\Steps;
 use TheCrypticAce\Suitey\Suitey;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class Test extends Command
@@ -34,6 +38,13 @@ class Test extends Command
             );
         } catch (ProcessFailedException $e) {
             return $e->getProcess()->getExitCode();
+        } catch (Throwable $e) {
+            $e = $e instanceof Exception ? $e : new FatalThrowableError($e);
+
+            $this->output->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
+            $this->getApplication()->renderException($e, $this->output);
+
+            return 1;
         }
     }
 }
