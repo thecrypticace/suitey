@@ -10,11 +10,7 @@ services:
   - mysql
 
 env:
-  global:
-    - ARTISAN_DB_HOST=127.0.0.1
-    - ARTISAN_DB_PORT=3306
-    - ARTISAN_DB_USER=travis
-    - ARTISAN_DB_PASS=
+  - ARTISAN_DB_HOST=127.0.0.1 ARTISAN_DB_PORT=3306 ARTISAN_DB_USER=travis ARTISAN_DB_PASS=
 
 cache:
   directories:
