@@ -8,6 +8,9 @@ use TheCrypticAce\Suitey\Process;
 
 class Migrate implements Step
 {
+    private $path;
+    private $database;
+
     public function __construct($database = null, $path = null)
     {
         $this->path = $path;

@@ -8,6 +8,8 @@ use TheCrypticAce\Suitey\Process;
 
 class SeedDatabase implements Step
 {
+    private $class;
+
     public function __construct($class)
     {
         $this->class = $class;
