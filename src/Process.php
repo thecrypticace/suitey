@@ -72,7 +72,7 @@ class Process
 
     public function quiet()
     {
-        return $this; // ->useOutput(new NullOutput);
+        return $this->useOutput(new NullOutput);
     }
 
     public function run($arguments = [])
