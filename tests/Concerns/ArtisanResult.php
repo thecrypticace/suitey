@@ -15,6 +15,8 @@ class ArtisanResult
         $this->output = $output;
         $this->status = $status;
         $this->parameters = $parameters;
+
+        $this->dump();
     }
 
     public function assertStatus($expected)
