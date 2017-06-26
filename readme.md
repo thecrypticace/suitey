@@ -52,7 +52,7 @@ Lets fix that.
 
 In your `AppServiceProvider` (or, better yet, a dedicated `TestingServiceProvider`) put this in the boot method:
 
-```
+```php
 Suitey::add([
     new \TheCrypticAce\Suitey\Steps\Migrate,
 ]);
@@ -61,14 +61,14 @@ Suitey::add([
 Your migrations will now run _before_ your test runs. Don't forget to remove the `DatabaseMigrations` trait from your tests.
 
 This step is configurable if your have a non-standard setup. You may optionally specify a connection name and/or a path to your migrations.
-```
+```php
 Suitey::add([
     new \TheCrypticAce\Suitey\Steps\Migrate("connection_name", "path_to_migrations"),
 ]);
 ```
 
 And if you have databases with multiple migration folders:
-```
+```php
 Suitey::add([
     new \TheCrypticAce\Suitey\Steps\Migrate("foo", "database/migrations/foo"),
     new \TheCrypticAce\Suitey\Steps\Migrate("bar", "database/migrations/bar"),
