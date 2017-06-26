@@ -3,9 +3,18 @@
 
 require __DIR__."/../bootstrap.php";
 
+use TheCrypticAce\Suitey\Laravel\SuiteyServiceProvider;
+
 $app = (new class {
     use Orchestra\Testbench\Traits\CreatesApplication;
     use \Tests\Concerns\SetUpEnvironment;
+
+    protected function getPackageProviders($app)
+    {
+        return [
+            SuiteyServiceProvider::class,
+        ];
+    }
 })->createApplication();
 
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
