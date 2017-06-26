@@ -23,17 +23,21 @@ class Migrate implements Step
 
     public function handle(IO $io, Closure $next)
     {
-        Process::artisan("migrate")->quiet()->run([
-            "--path={$this->path}",
-            "--database={$this->database}",
-        ]);
+        $arguments = [];
+
+        if ($this->path) {
+            $arguments[] = "--path={$this->path}";
+        }
+
+        if ($this->database) {
+            $arguments[] = "--database={$this->database}";
+        }
+
+        Process::artisan("migrate")->quiet()->run($arguments);
 
         $exitCode = $next($io);
 
-        Process::artisan("migrate:rollback")->quiet()->run([
-            "--path={$this->path}",
-            "--database={$this->database}",
-        ]);
+        Process::artisan("migrate:rollback")->quiet()->run($arguments);
 
         return $exitCode;
     }
