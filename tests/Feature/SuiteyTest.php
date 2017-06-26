@@ -7,6 +7,7 @@ use Tests\TestCase;
 use TheCrypticAce\Suitey\IO;
 use TheCrypticAce\Suitey\Process;
 use TheCrypticAce\Suitey\Steps\Step;
+use TheCrypticAce\Suitey\Steps\RunCode;
 
 class SuiteyTest extends TestCase
 {
@@ -124,25 +125,14 @@ class SuiteyTest extends TestCase
     {
         $code = $code ?? function () {};
 
-        return new class ($name, $code) implements Step {
+        return new class ($name, $code) extends RunCode {
             public $hasRun = false;
-
-            public function __construct($name, $code)
-            {
-                $this->name = $name;
-                $this->code = $code;
-            }
-
-            public function name()
-            {
-                return $this->name;
-            }
 
             public function handle(IO $io, Closure $next)
             {
                 $this->hasRun = true;
 
-                return ($this->code)($io, $next) ?? $next($io);
+                return parent::handle($io, $next);
             }
         };
     }
