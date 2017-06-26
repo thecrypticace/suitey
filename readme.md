@@ -95,6 +95,9 @@ Suitey::add([
 |  | path | *optional*The path to your migration files |
 | `SeedDatabase` | | Run the given seeder before starting PHPUnit |
 |  | name | *required* The name of the seeder you would like to run |
+| `RunCode` | | Run a closure! |
+|  | name | *required* The name displayed to the user. This can be a closure that determines the name if needed. |
+|  | code | *required* The code to run |
 
 ## Want to see something meta?
 
