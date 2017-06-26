@@ -109,6 +109,34 @@ class SuiteyTest extends TestCase
     }
 
     /** @test */
+    public function errors_thrown_during_steps_are_caught_and_returned()
+    {
+        $this->suitey->add(new Steps\RunCode("Throwing error", function () {
+            echo $foo;
+        }));
+
+        $result = $this->artisan("test");
+        $result->assertStatus(1);
+        $result->assertStepOutput([
+            "[1/2] Throwing error",
+        ]);
+    }
+
+    /** @test */
+    public function exceptions_thrown_during_steps_are_caught_and_returned()
+    {
+        $this->suitey->add(new Steps\RunCode("Throwing exception", function () {
+            throw new \Exception("test");
+        }));
+
+        $result = $this->artisan("test");
+        $result->assertStatus(1);
+        $result->assertStepOutput([
+            "[1/2] Throwing exception",
+        ]);
+    }
+
+    /** @test */
     public function stub()
     {
         $this->assertTrue(true);
