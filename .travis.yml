@@ -6,12 +6,24 @@ php:
 
 sudo: false
 
+services:
+  - mysql
+
+env:
+ - ARTISAN_DB_HOST=127.0.0.1
+ - ARTISAN_DB_PORT=3306
+ - ARTISAN_DB_USER=travis
+ - ARTISAN_DB_PASS=
+
 cache:
   directories:
     - $HOME/.composer/cache
 
 before_install:
   - travis_retry composer self-update
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS suitey_test_default;'
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS suitey_test_foo;'
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS suitey_test_bar;'
 
 install:
   - composer install --no-interaction --prefer-dist --no-suggest

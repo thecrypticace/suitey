@@ -3,12 +3,14 @@
 namespace Tests;
 
 use TheCrypticAce\Suitey\Suitey;
+use TheCrypticAce\Suitey\Process;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use TheCrypticAce\Suitey\Laravel\SuiteyServiceProvider;
 
 class TestCase extends BaseTestCase
 {
     use Concerns\InteractsWithConsole;
+    use Concerns\SetUpEnvironment;
 
     public function setUp()
     {
@@ -17,6 +19,8 @@ class TestCase extends BaseTestCase
         $this->suitey = $this->app->make(Suitey::class);;
 
         $_SERVER["argv"] = ["artisan", "test", "--filter", "stub"];
+
+        Process::useArtisanPath(__DIR__."/Fixture/artisan");
     }
 
     protected function getPackageProviders($app)
