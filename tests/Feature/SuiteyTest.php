@@ -97,6 +97,19 @@ class SuiteyTest extends TestCase
     }
 
     /** @test */
+    public function you_may_add_steps_through_the_facade()
+    {
+        \TheCrypticAce\Suitey\Laravel\Suitey::add($this->successfulStep());
+
+        $result = $this->artisan("test");
+        $result->assertStatus(0);
+        $result->assertStepOutput([
+            "[1/2] successful step",
+            "[2/2] Run PHPUnit",
+        ]);
+    }
+
+    /** @test */
     public function stub()
     {
         $this->assertTrue(true);
