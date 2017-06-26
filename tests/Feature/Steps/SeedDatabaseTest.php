@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Steps;
 
-use Tests\TestCase;
 use TheCrypticAce\Suitey\Steps;
 
 class SeedDatabaseTest extends TestCase

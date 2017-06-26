@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Steps;
 
-use Tests\TestCase;
 use TheCrypticAce\Suitey\Steps;
 
 class MigrateTest extends TestCase
@@ -76,10 +75,5 @@ class MigrateTest extends TestCase
             "[3/4] Asserting",
             "[4/4] Run PHPUnit",
         ]);
-    }
-
-    private function relativeFixturePath()
-    {
-        return "../../../../tests/Fixture";
     }
 }
