@@ -80,6 +80,7 @@ class Process
         $arguments = array_merge($this->binary, $this->arguments, $arguments);
 
         $process = new SymfonyProcess($arguments, null, $this->environment);
+        $process->inheritEnvironmentVariables(true);
 
         try {
             if (! $this->output instanceof NullOutput && $this->tty) {
