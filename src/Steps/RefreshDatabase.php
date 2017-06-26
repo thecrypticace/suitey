@@ -8,6 +8,9 @@ use TheCrypticAce\Suitey\Process;
 
 class RefreshDatabase implements Step
 {
+    private $path;
+    private $database;
+
     public function __construct($database = null, $path = null)
     {
         $this->path = $path;
@@ -16,15 +19,24 @@ class RefreshDatabase implements Step
 
     public function name()
     {
-        return "Refresh db {$this->database}";
+        return $this->database
+            ? "Refreshing {$this->database}"
+            : "Refreshing database";
     }
 
     public function handle(IO $io, Closure $next)
     {
-        Process::artisan("migrate:refresh")->quiet()->run([
-            "--path={$this->path}",
-            "--database={$this->database}",
-        ]);
+        $arguments = [];
+
+        if ($this->path) {
+            $arguments[] = "--path={$this->path}";
+        }
+
+        if ($this->database) {
+            $arguments[] = "--database={$this->database}";
+        }
+
+        Process::artisan("migrate:refresh")->quiet()->run($arguments);
 
         return $next($io);
     }
