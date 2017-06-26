@@ -6,8 +6,7 @@ use Closure;
 use Tests\TestCase;
 use TheCrypticAce\Suitey\IO;
 use TheCrypticAce\Suitey\Process;
-use TheCrypticAce\Suitey\Steps\Step;
-use TheCrypticAce\Suitey\Steps\RunCode;
+use TheCrypticAce\Suitey\Steps;
 
 class SuiteyTest extends TestCase
 {
@@ -138,7 +137,7 @@ class SuiteyTest extends TestCase
     {
         $code = $code ?? function () {};
 
-        return new class ($name, $code) extends RunCode {
+        return new class ($name, $code) extends Steps\RunCode {
             public $hasRun = false;
 
             public function handle(IO $io, Closure $next)
