@@ -6,7 +6,7 @@ use Closure;
 use TheCrypticAce\Suitey\IO;
 use TheCrypticAce\Suitey\Process;
 
-class RunSeeder implements Step
+class SeedDatabase implements Step
 {
     public function __construct($class)
     {
@@ -15,7 +15,7 @@ class RunSeeder implements Step
 
     public function name()
     {
-        return "Run seeder {$this->class}";
+        return "Seed database using {$this->class}";
     }
 
     public function handle(IO $io, Closure $next)

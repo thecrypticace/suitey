@@ -29,6 +29,7 @@
         "orchestra/testbench": "^3.4"
     },
     "autoload-dev": {
+        "classmap": ["tests/Fixture/database"],
         "psr-4": {
             "Tests\\": "tests/"
         }
