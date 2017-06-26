@@ -62,7 +62,7 @@ Suitey::add([
 
 *Note: When using the facade don't forget to "use" it at top of your service provider:*
 ```php
-use \TheCrypticAce\Suitey\Laravel\Suitey;
+use TheCrypticAce\Suitey\Laravel\Suitey;
 ```
 
 Your migrations will now run _before_ your test runs. Don't forget to remove the `DatabaseMigrations` trait from your tests.
