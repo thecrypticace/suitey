@@ -16,6 +16,7 @@ class Process
     private $arguments;
     private $environment;
 
+    private static $artisanPath;
     private static $sharedOutput;
 
     public function __construct($binary, $arguments, $environment = null)
@@ -37,7 +38,12 @@ class Process
 
     public static function artisan($command, $arguments = [])
     {
-        return static::binary("artisan", array_merge((array) $command, $arguments));
+        return static::binary(static::$artisanPath, array_merge((array) $command, $arguments));
+    }
+
+    public static function useArtisanPath($newPath)
+    {
+        static::$artisanPath = $newPath;
     }
 
     public static function usingOutput(OutputInterface $output, $callback)
