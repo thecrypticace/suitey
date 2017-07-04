@@ -4,10 +4,18 @@ namespace TheCrypticAce\Suitey;
 
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Collection;
-use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Foundation\Application;
 
 class Suitey
 {
+    /**
+     * The laravel application instance
+     * A container used to resolve dependencies
+     *
+     * @var \Illuminate\Contracts\Foundation\Application
+     */
+    private $app;
+
     /**
      * A list of all executable steps
      *
@@ -15,17 +23,10 @@ class Suitey
      */
     private $steps;
 
-    /**
-     * A container used to resolve dependencies
-     *
-     * @var \Illuminate\Contracts\Container\Container
-     */
-    private $container;
-
-    public function __construct(Container $container)
+    public function __construct(Application $app)
     {
+        $this->app = $app;
         $this->steps = new Collection;
-        $this->container = $container;
     }
 
     public function add($steps)
@@ -51,7 +52,7 @@ class Suitey
 
     private function pipeline()
     {
-        $pipeline = new Pipeline($this->container);
+        $pipeline = new Pipeline($this->app);
 
         return $pipeline->through($this->pending()->all());
     }
