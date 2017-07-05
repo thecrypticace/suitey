@@ -2,10 +2,13 @@
 
 namespace Tests\Concerns;
 
+use TheCrypticAce\Suitey\Environment\Dotenv;
+
 trait SetUpEnvironment
 {
     protected function getEnvironmentSetUp($app)
     {
+        $app->make(Dotenv::class)->load(realpath(__DIR__."/../Fixture/.env"));
         $app->useDatabasePath(realpath(__DIR__."/../Fixture/database"));
 
         $files = $this->getConfigurationFiles();
