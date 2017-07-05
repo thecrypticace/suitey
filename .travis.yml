@@ -15,6 +15,9 @@ env:
     - ARTISAN_DB_PORT=3306
     - ARTISAN_DB_USER=travis
     - ARTISAN_DB_PASS=""
+  matrix:
+    - PHPUNIT_VERSION="^5.7"
+    - PHPUNIT_VERSION="^6.0"
 
 cache:
   directories:
@@ -28,6 +31,7 @@ before_install:
 
 install:
   - composer install --no-interaction --prefer-dist --no-suggest
+  - composer update phpunit/phpunit:${PHPUNIT_VERSION} --dev --update-with-dependencies --no-interaction --prefer-dist --no-suggest
 
 script: vendor/bin/phpunit
 
