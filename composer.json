@@ -24,9 +24,9 @@
         }
     },
     "require-dev": {
+        "orchestra/testbench": "^3.4",
         "phpunit/phpunit": "^6.0",
-        "symfony/var-dumper": "^3.2",
-        "orchestra/testbench": "^3.4"
+        "symfony/var-dumper": "^3.2"
     },
     "autoload-dev": {
         "classmap": ["tests/Fixture/database"],
