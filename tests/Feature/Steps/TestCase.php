@@ -10,6 +10,8 @@ class TestCase extends BaseTestCase
     public function tearDown()
     {
         $this->cleanAllDatabases();
+
+        parent::tearDown();
     }
 
     protected function relativeFixturePath()

@@ -23,6 +23,11 @@ class TestCase extends BaseTestCase
         Process::useArtisanPath(__DIR__."/Fixture/artisan");
     }
 
+    public function __sleep()
+    {
+        return [];
+    }
+
     protected function getPackageProviders($app)
     {
         return [
