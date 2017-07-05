@@ -28,7 +28,7 @@ class Process
         $this->status = null;
         $this->output = static::$sharedOutput;
         $this->arguments = $arguments;
-        $this->environment = $environment ?? ["APP_ENV" => "testing"];
+        $this->environment = $environment ?? [];
     }
 
     public static function binary($binary, $arguments = [])

@@ -5,6 +5,7 @@ namespace TheCrypticAce\Suitey;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Foundation\Application;
+use TheCrypticAce\Suitey\Environment\Environment;
 
 class Suitey
 {
@@ -44,6 +45,8 @@ class Suitey
     public function run(IO $io)
     {
         return Process::usingOutput($io->output(), function () use ($io) {
+            Environment::loadUsing($this->app);
+
             return $this->pipeline()->send($io)->then(function ($io) {
                 return 0;
             });
