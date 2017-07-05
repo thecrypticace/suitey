@@ -2,13 +2,18 @@
 
 namespace TheCrypticAce\Suitey\Environment;
 
-use PHPUnit\Util\Configuration;
+use PHPUnit_Util_Configuration as PHPUnit5Config;
+use PHPUnit\Util\Configuration as PHPUnit6Config;
 
 class PHPUnit
 {
     public function load($file)
     {
-        $config = Configuration::getInstance($file)->getPHPConfiguration();
+        $configClass = class_exists(PHPUnit6Config::class, true)
+            ? PHPUnit6Config::class
+            : PHPUnit5Config::class;
+
+        $config = $configClass::getInstance($file)->getPHPConfiguration();
 
         return Environment::apply($config["env"] ?? []);
     }
