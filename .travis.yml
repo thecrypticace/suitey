@@ -31,7 +31,7 @@ before_install:
 
 install:
   - composer install --no-interaction --prefer-dist --no-suggest
-  - composer update phpunit/phpunit:${PHPUNIT_VERSION} --dev --update-with-dependencies --no-interaction --prefer-dist --no-suggest
+  - composer require phpunit/phpunit:${PHPUNIT_VERSION} --dev --update-with-dependencies --no-interaction --prefer-dist --no-suggest
 
 script: vendor/bin/phpunit
 
