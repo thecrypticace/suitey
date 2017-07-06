@@ -1,6 +1,10 @@
 <?php
 
 return [
+    "steps" => [
+        // \TheCrypticAce\Suitey\Migrate::class,
+    ],
+
     "environments" => [
         [
             "path" => base_path(".env.testing"),

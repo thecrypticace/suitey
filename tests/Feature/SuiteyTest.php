@@ -109,6 +109,84 @@ class SuiteyTest extends TestCase
     }
 
     /** @test */
+    public function steps_can_be_specified_through_the_config_using_class_names()
+    {
+        $this->app["config"]->set("suitey.steps", [
+            \Tests\Fixture\App\Steps\Stub::class,
+        ]);
+
+        $result = $this->artisan("test");
+        $result->assertStatus(0);
+        $result->assertStepOutput([
+            "[1/2] stub -",
+            "[2/2] Run PHPUnit",
+        ]);
+    }
+
+    /** @test */
+    public function steps_can_be_specified_through_the_config_using_arrays()
+    {
+        $this->app["config"]->set("suitey.steps", [
+            [
+                "class" => \Tests\Fixture\App\Steps\Stub::class,
+            ]
+        ]);
+
+        $result = $this->artisan("test");
+        $result->assertStatus(0);
+        $result->assertStepOutput([
+            "[1/2] stub -",
+            "[2/2] Run PHPUnit",
+        ]);
+    }
+
+    /** @test */
+    public function steps_can_be_specified_through_the_config_using_arrays_to_configure_them()
+    {
+        $this->app["config"]->set("suitey.steps", [
+            [
+                "class" => \Tests\Fixture\App\Steps\Stub::class,
+                "options" => [
+                    "name" => "foo",
+                ],
+            ]
+        ]);
+
+        $result = $this->artisan("test");
+        $result->assertStatus(0);
+        $result->assertStepOutput([
+            "[1/2] stub foo",
+            "[2/2] Run PHPUnit",
+        ]);
+    }
+
+    /** @test */
+    public function steps_specified_through_the_config_can_mix_and_match_strings_and_arrays()
+    {
+        $this->app["config"]->set("suitey.steps", [
+            \Tests\Fixture\App\Steps\Stub::class,
+            [
+                "class" => \Tests\Fixture\App\Steps\Stub::class,
+            ],
+            [
+                "class" => \Tests\Fixture\App\Steps\Stub::class,
+                "options" => [
+                    "name" => "foo",
+                ],
+            ],
+        ]);
+
+        $result = $this->artisan("test");
+        $result->assertStatus(0);
+        $result->assertStepOutput([
+            "[1/4] stub -",
+            "[2/4] stub -",
+            "[3/4] stub foo",
+            "[4/4] Run PHPUnit",
+        ]);
+    }
+
+    /** @test */
     public function errors_thrown_during_steps_are_caught_and_returned()
     {
         $this->suitey->add(new Steps\RunCode("Throwing error", function () {

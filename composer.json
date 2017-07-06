@@ -31,7 +31,8 @@
     "autoload-dev": {
         "classmap": ["tests/Fixture/database"],
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests/",
+            "Tests\\Fixture\\App\\": "tests/Fixture/app"
         }
     },
     "minimum-stability": "stable",
