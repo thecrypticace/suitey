@@ -3,6 +3,7 @@
 namespace Tests\Concerns;
 
 use PHPUnit\Framework\Assert;
+use Illuminate\Support\Collection;
 
 class ArtisanResult
 {
@@ -24,9 +25,10 @@ class ArtisanResult
 
     public function assertStepOutput($expectedLines)
     {
-        foreach ($this->stepLines() as $index => $actualLine) {
-            Assert::assertEquals($expectedLines[$index], $actualLine);
-        }
+        $actualLines = $this->lines();
+        $actualLines = $actualLines->slice(0, count($expectedLines))->all();
+
+        Assert::assertEquals($expectedLines, $actualLines);
     }
 
     public function dump()
@@ -44,19 +46,11 @@ class ArtisanResult
 
     private function lines()
     {
-        foreach (explode("\n", trim($this->output)) as $index => $actualLine) {
-            yield $index => trim($actualLine);
-        }
-    }
+        $lines = new Collection(explode("\n", trim($this->output)));
+        $lines = $lines->map(function ($line) {
+            return trim($line);
+        });
 
-    private function stepLines()
-    {
-        foreach ($this->lines() as $index => $actualLine) {
-            if (substr($actualLine, 0, 1) !== "[") {
-                break;
-            }
-
-            yield $index => $actualLine;
-        }
+        return $lines;
     }
 }
