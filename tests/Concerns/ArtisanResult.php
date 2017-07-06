@@ -23,7 +23,7 @@ class ArtisanResult
         Assert::assertEquals($expected, $this->status);
     }
 
-    public function assertStepOutput($expectedLines)
+    public function assertOutputContains($expected)
     {
         $actualLines = $this->lines();
         $actualLines = $actualLines->slice(0, count($expectedLines))->all();

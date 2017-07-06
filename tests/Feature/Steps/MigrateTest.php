@@ -16,7 +16,7 @@ class MigrateTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/3] Migrate database",
             "[2/3] Asserting",
             "[3/3] Run PHPUnit",
@@ -33,7 +33,7 @@ class MigrateTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/3] Migrate foo",
             "[2/3] Asserting",
             "[3/3] Run PHPUnit",
@@ -50,7 +50,7 @@ class MigrateTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/3] Migrate bar",
             "[2/3] Asserting",
             "[3/3] Run PHPUnit",
@@ -69,7 +69,7 @@ class MigrateTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/4] Migrate foo",
             "[2/4] Migrate bar",
             "[3/4] Asserting",

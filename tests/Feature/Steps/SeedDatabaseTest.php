@@ -17,7 +17,7 @@ class SeedDatabaseTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/4] Migrate database",
             "[2/4] Seed database using TestSeeder",
             "[3/4] Asserting",

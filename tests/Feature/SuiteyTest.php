@@ -15,7 +15,7 @@ class SuiteyTest extends TestCase
     {
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/1] Run PHPUnit",
         ]);
     }
@@ -27,7 +27,7 @@ class SuiteyTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/2] successful step",
             "[2/2] Run PHPUnit",
         ]);
@@ -44,7 +44,7 @@ class SuiteyTest extends TestCase
             "--test-only" => true,
         ]);
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/1] Run PHPUnit",
         ]);
 
@@ -60,7 +60,7 @@ class SuiteyTest extends TestCase
             "--test-only" => true,
         ]);
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/1] Run PHPUnit",
         ]);
     }
@@ -73,7 +73,7 @@ class SuiteyTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(1);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/3] failing step",
         ]);
 
@@ -88,7 +88,7 @@ class SuiteyTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(1);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/3] failing process step",
         ]);
 
@@ -102,7 +102,7 @@ class SuiteyTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/2] successful step",
             "[2/2] Run PHPUnit",
         ]);
@@ -117,7 +117,7 @@ class SuiteyTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/2] stub -",
             "[2/2] Run PHPUnit",
         ]);
@@ -134,7 +134,7 @@ class SuiteyTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/2] stub -",
             "[2/2] Run PHPUnit",
         ]);
@@ -154,7 +154,7 @@ class SuiteyTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/2] stub foo",
             "[2/2] Run PHPUnit",
         ]);
@@ -178,7 +178,7 @@ class SuiteyTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/4] stub -",
             "[2/4] stub -",
             "[3/4] stub foo",
@@ -195,7 +195,7 @@ class SuiteyTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(1);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/2] Throwing error",
         ]);
     }
@@ -209,7 +209,7 @@ class SuiteyTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(1);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/2] Throwing exception",
         ]);
     }

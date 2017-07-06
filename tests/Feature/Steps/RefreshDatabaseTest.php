@@ -16,7 +16,7 @@ class RefreshDatabaseTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/3] Refreshing database",
             "[2/3] Asserting",
             "[3/3] Run PHPUnit",
@@ -33,7 +33,7 @@ class RefreshDatabaseTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/3] Refreshing foo",
             "[2/3] Asserting",
             "[3/3] Run PHPUnit",
@@ -50,7 +50,7 @@ class RefreshDatabaseTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/3] Refreshing bar",
             "[2/3] Asserting",
             "[3/3] Run PHPUnit",
@@ -69,7 +69,7 @@ class RefreshDatabaseTest extends TestCase
 
         $result = $this->artisan("test");
         $result->assertStatus(0);
-        $result->assertStepOutput([
+        $result->assertOutputContains([
             "[1/4] Refreshing foo",
             "[2/4] Refreshing bar",
             "[3/4] Asserting",
