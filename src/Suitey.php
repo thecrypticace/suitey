@@ -62,8 +62,10 @@ class Suitey
 
     private function pending()
     {
-        return $this->steps->map(function ($step, $index) {
-            return new PendingStep($step, 1 + $index, $this->steps->count());
+        $steps = $this->steps;
+
+        return $steps->map(function ($step, $index) use ($steps) {
+            return new PendingStep($step, 1 + $index, $steps->count());
         });
     }
 }
