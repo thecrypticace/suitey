@@ -2,7 +2,6 @@
 
 namespace TheCrypticAce\Suitey;
 
-use InvalidArgumentException;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Foundation\Application;
@@ -54,46 +53,6 @@ class Suitey
         });
     }
 
-    private function loadFromConfig()
-    {
-        $steps = new Collection(
-            $this->app["config"]->get("suitey.steps") ?? []
-        );
-
-        $steps = $steps->map(function ($step) {
-            return $this->normalizeConfigStep($step);
-        });
-
-        $steps = $steps->map(function ($step) {
-            return $this->createConfigStep($step);
-        });
-
-        return $steps;
-    }
-
-    private function normalizeConfigStep($step)
-    {
-        if (is_string($step)) {
-            return ["class" => $step, "options" => []];
-        }
-
-        if (is_array($step)) {
-            return array_replace(["class" => null, "options" => []], $step);
-        }
-
-        throw new InvalidArgumentException("Steps must be provided by a class name or array wth 'class' and 'options' keys.");
-    }
-
-    private function createConfigStep($step)
-    {
-        $class = $step["class"];
-        $options = $step["options"];
-
-        return $this->app->makeWith($class, [
-            "options" => $options,
-        ]);
-    }
-
     private function pipeline()
     {
         $pipeline = new Pipeline($this->app);
@@ -103,7 +62,8 @@ class Suitey
 
     private function pending()
     {
-        $steps = $this->loadFromConfig()->merge($this->steps);
+        $steps = ConfigSteps::new($this->app)->load();
+        $steps = $steps->merge($this->steps);
 
         return $steps->map(function ($step, $index) use ($steps) {
             return new PendingStep($step, 1 + $index, $steps->count());
