@@ -44,8 +44,8 @@ class ArtisanResult
 
     private function outputLines()
     {
-        foreach (explode("\n", $this->output) as $index => $actualLine) {
-            yield $index => $actualLine;
+        foreach (explode("\n", trim($this->output)) as $index => $actualLine) {
+            yield $index => trim($actualLine);
         }
     }
 
