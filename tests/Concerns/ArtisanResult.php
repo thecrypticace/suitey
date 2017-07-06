@@ -42,7 +42,7 @@ class ArtisanResult
         return $this->status === 0 ? $this : $this->dump();
     }
 
-    private function outputLines()
+    private function lines()
     {
         foreach (explode("\n", trim($this->output)) as $index => $actualLine) {
             yield $index => trim($actualLine);
@@ -51,7 +51,7 @@ class ArtisanResult
 
     private function stepLines()
     {
-        foreach ($this->outputLines() as $index => $actualLine) {
+        foreach ($this->lines() as $index => $actualLine) {
             if (substr($actualLine, 0, 1) !== "[") {
                 break;
             }
