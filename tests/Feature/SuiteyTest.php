@@ -36,6 +36,51 @@ class SuiteyTest extends TestCase
     }
 
     /** @test */
+    public function it_can_add_multiple_steps_in_one_call()
+    {
+        $this->suitey->add([
+            $this->successfulStep(),
+            $this->successfulStep(),
+        ]);
+
+        $result = $this->artisan("test");
+        $result->assertStatus(0);
+        $result->assertOutputContains([
+            "[1/3] successful step",
+            "[2/3] successful step",
+            "[3/3] Run PHPUnit",
+        ]);
+    }
+
+    /** @test */
+    public function it_can_add_multiple_steps_with_mixed_types_in_one_call()
+    {
+        $this->suitey->add([
+            \Tests\Fixture\App\Steps\Stub::class,
+            $this->successfulStep(),
+            [
+                "class" => \Tests\Fixture\App\Steps\Stub::class,
+            ],
+            $this->successfulStep(),
+            [
+                "class" => \Tests\Fixture\App\Steps\Stub::class,
+                "options" => ["name" => "foo"],
+            ],
+        ]);
+
+        $result = $this->artisan("test");
+        $result->assertStatus(0);
+        $result->assertOutputContains([
+            "[1/6] stub -",
+            "[2/6] successful step",
+            "[3/6] stub -",
+            "[4/6] successful step",
+            "[5/6] stub foo",
+            "[6/6] Run PHPUnit",
+        ]);
+    }
+
+    /** @test */
     public function it_can_run_only_phpunit_if_requested()
     {
         $this->suitey->add($step = $this->successfulStep());
@@ -113,6 +158,21 @@ class SuiteyTest extends TestCase
     {
         $this->app["config"]->set("suitey.steps", [
             \Tests\Fixture\App\Steps\Stub::class,
+        ]);
+
+        $result = $this->artisan("test");
+        $result->assertStatus(0);
+        $result->assertOutputContains([
+            "[1/2] stub -",
+            "[2/2] Run PHPUnit",
+        ]);
+    }
+
+    /** @test */
+    public function steps_can_be_specified_through_add_using_config_style()
+    {
+        $this->suitey->add([
+            "class" => \Tests\Fixture\App\Steps\Stub::class,
         ]);
 
         $result = $this->artisan("test");
