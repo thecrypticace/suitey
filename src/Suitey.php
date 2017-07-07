@@ -2,8 +2,6 @@
 
 namespace TheCrypticAce\Suitey;
 
-use Illuminate\Pipeline\Pipeline;
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\Foundation\Application;
 use TheCrypticAce\Suitey\Environment\Environment;
 
@@ -20,14 +18,14 @@ class Suitey
     /**
      * A list of all executable steps
      *
-     * @var \Illuminate\Support\Collection
+     * @var \TheCrypticAce\Suitey\Steps
      */
     private $steps;
 
     public function __construct(Application $app)
     {
         $this->app = $app;
-        $this->steps = new Collection;
+        $this->steps = new Steps;
     }
 
     public function add($steps)
@@ -38,7 +36,7 @@ class Suitey
     public function fresh()
     {
         return tap(clone $this, function ($instance) {
-            $instance->steps = new Collection;
+            $instance->steps = new Steps;
         });
     }
 
@@ -53,20 +51,20 @@ class Suitey
         });
     }
 
-    private function pipeline()
+    private function steps()
     {
-        $pipeline = new Pipeline($this->app);
-
-        return $pipeline->through($this->pending()->all());
+        return $this->stepsFromConfig()->merge($this->steps);
     }
 
-    private function pending()
+    private function stepsFromConfig()
     {
-        $steps = ConfigSteps::new($this->app)->load();
-        $steps = $steps->merge($this->steps);
+        return new Steps(
+            $this->app["config"]->get("suitey.steps") ?? []
+        );
+    }
 
-        return $steps->map(function ($step, $index) use ($steps) {
-            return new PendingStep($step, 1 + $index, $steps->count());
-        });
+    private function pipeline()
+    {
+        return $this->steps()->pipeline($this->app);
     }
 }
