@@ -10,9 +10,9 @@ class SeedDatabase implements Step
 {
     private $class;
 
-    public function __construct($class)
+    public function __construct(array $options)
     {
-        $this->class = $class;
+        $this->class = $options["class"];
     }
 
     public function name()

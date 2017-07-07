@@ -11,10 +11,10 @@ class RefreshDatabase implements Step
     private $path;
     private $database;
 
-    public function __construct($database = null, $path = null)
+    public function __construct(array $options = [])
     {
-        $this->path = $path;
-        $this->database = $database;
+        $this->path = $options["path"] ?? null;
+        $this->database = $options["database"] ?? null;
     }
 
     public function name()
