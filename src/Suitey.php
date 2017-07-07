@@ -30,7 +30,10 @@ class Suitey
 
     public function add($steps)
     {
-        $this->steps = $this->steps->merge(array_wrap($steps));
+        $steps = array_wrap($steps);
+        $steps = isset($steps["class"]) ? [$steps] : $steps;
+
+        $this->steps = $this->steps->merge($steps);
     }
 
     public function fresh()

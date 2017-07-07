@@ -15,7 +15,9 @@ trait RunStepTests
         foreach ($steps as $step) {
             if ($method === "config") {
                 $this->app["config"]->push("suitey.steps", $step);
-            } else if ($method === "add") {
+            } else if ($method === "add_config") {
+                $this->suitey->add($step);
+            } else if ($method === "add_object") {
                 $this->suitey->add(new $step["class"]($step["options"]));
             }
         }
@@ -34,12 +36,20 @@ trait RunStepTests
     public function stepDataProvider()
     {
         foreach ($this->steps() as $name => $criteria) {
-            yield "{$this->name()} via  ::add - {$name}" => [
+            yield "{$this->name()} via ::add config - {$name}" => [
                 $criteria["steps"],
                 $criteria["status"],
                 $criteria["output"],
                 $criteria["database"],
-                "add",
+                "add_config",
+            ];
+
+            yield "{$this->name()} via ::add object - {$name}" => [
+                $criteria["steps"],
+                $criteria["status"],
+                $criteria["output"],
+                $criteria["database"],
+                "add_object",
             ];
 
             yield "{$this->name()} via config - {$name}" => [
