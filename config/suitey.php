@@ -3,6 +3,11 @@
 return [
     "steps" => [
         // \TheCrypticAce\Suitey\Migrate::class,
+        // \TheCrypticAce\Suitey\RefreshDatabase::class,
+        // [
+        //     "class" => \TheCrypticAce\Suitey\SeedDatabase::class,
+        //     "options" => ["class" => "ExampleSeeder"],
+        // ]
     ],
 
     "environments" => [

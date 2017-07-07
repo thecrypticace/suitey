@@ -9,12 +9,15 @@ Set up the world. Run code before and after PHPUnit.
 <a href="https://packagist.org/packages/thecrypticace/suitey"><img src="https://poser.pugx.org/thecrypticace/suitey/license.svg" alt="License"></a>
 </p>
 
-## Note
-This project is a major WIP. Any feedback, ideas, or issues are appreciated.
+## tl;dr (Laravel 5.5)
+1. `composer require thecrypticace/suitey`
+2. Add `TheCrypticAce\Suitey\Laravel\SuiteyServiceProvider::class` to your `config/app.php` file. (Not necessary in Laravel 5.5+)
+2. `php artisan vendor:publish --tag=suitey`
+3. Update `steps` list to configure and run the steps you want before your tests.
 
 ## Installation
 
-`composer require thecrypticace/suitey:dev-master --dev`
+`composer require thecrypticace/suitey`
 
 If you're running Laravel 5.4 then add this to the providers in your config/app.php file:
 
@@ -50,37 +53,66 @@ output that looks like this:
 
 Lets fix that.
 
-In your `AppServiceProvider` (or, better yet, a dedicated `TestingServiceProvider`) add the `Migrate` step by using the `Suitey` facade.
+### Publishing the config
+Run `php artisan vendor:publish --tag=suitey` to publish the config file. This file is where you can detail what steps run and how to load the test environment variables for tests.
+
+### Adding steps
+In the config for Suitey you will see a `steps` array that looks like this:
+```php
+"steps" => [
+    // \TheCrypticAce\Suitey\Migrate::class,
+    // \TheCrypticAce\Suitey\RefreshDatabase::class,
+    // [
+    //     "class" => \TheCrypticAce\Suitey\SeedDatabase::class,
+    //     "options" => ["class" => "ExampleSeeder"],
+    // ]
+],
+```
+
+Uncomment the `Migrate` step and your database migrations will run before your tests.
 
 ```php
-Suitey::add([
-    new \TheCrypticAce\Suitey\Steps\Migrate,
-]);
+"steps" => [
+    \TheCrypticAce\Suitey\Migrate::class,
+
+    // \TheCrypticAce\Suitey\RefreshDatabase::class,
+    // [
+    //     "class" => \TheCrypticAce\Suitey\SeedDatabase::class,
+    //     "options" => ["class" => "ExampleSeeder"],
+    // ]
+],
 ```
 
 *Note: You may resolve the class through the container instead of using the facade if your wish.*
 
-*Note: When using the facade don't forget to "use" it at top of your service provider:*
-```php
-use TheCrypticAce\Suitey\Laravel\Suitey;
-```
-
 Your migrations will now run _before_ your test runs. Don't forget to remove the `DatabaseMigrations` trait from your tests.
 
-This step is configurable if your have a non-standard setup. You may optionally specify a connection name and/or a path to your migrations.
+This step is configurable if your have an atypical setup. You may optionally specify a connection name and/or a path to your migrations.
 ```php
-Suitey::add([
-    new \TheCrypticAce\Suitey\Steps\Migrate("connection_name", "path_to_migrations"),
-]);
+"steps" => [
+    [
+        "class" => \TheCrypticAce\Suitey\Migrate::class,
+        "options" => ["database" => "connection_name", "path" => "path_to_migrations"],
+    ],
+],
 ```
 
-And if you have databases with multiple migration folders:
+And if you have more than one migration folder:
 ```php
-Suitey::add([
-    new \TheCrypticAce\Suitey\Steps\Migrate("foo", "database/migrations/foo"),
-    new \TheCrypticAce\Suitey\Steps\Migrate("bar", "database/migrations/bar"),
-    new \TheCrypticAce\Suitey\Steps\Migrate("baz", "database/migrations/baz"),
-]);
+"steps" => [
+    [
+        "class" => \TheCrypticAce\Suitey\Migrate::class,
+        "options" => ["database" => "foo", "path" => "database/migrations/foo"],
+    ],
+    [
+        "class" => \TheCrypticAce\Suitey\Migrate::class,
+        "options" => ["database" => "bar", "path" => "database/migrations/bar"],
+    ],
+    [
+        "class" => \TheCrypticAce\Suitey\Migrate::class,
+        "options" => ["database" => "baz", "path" => "database/migrations/baz"],
+    ],
+],
 ```
 
 ## Available Steps
