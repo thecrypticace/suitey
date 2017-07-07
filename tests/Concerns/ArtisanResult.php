@@ -16,6 +16,7 @@ class ArtisanResult
         $this->output = $output;
         $this->status = $status;
         $this->parameters = $parameters;
+        $this->assertableOutput = preg_replace("/[\s\n]+/", " ", $this->output);
     }
 
     public function assertStatus($expected)
@@ -25,10 +26,9 @@ class ArtisanResult
 
     public function assertOutputContains($expected)
     {
-        $actualLines = $this->lines();
-        $actualLines = $actualLines->slice(0, count($expectedLines))->all();
-
-        Assert::assertEquals($expectedLines, $actualLines);
+        foreach ((array) $expected as $line) {
+            Assert::assertContains($line, $this->assertableOutput);
+        }
     }
 
     public function dump()
