@@ -44,9 +44,10 @@ class ConfigSteps
             return array_replace(["class" => null, "options" => []], $step);
         }
 
-        throw new InvalidArgumentException(
-            "Invalid configuration step at index {$index}. Steps must be specified by class name or array wth 'class' and 'options' keys."
-        );
+        throw new InvalidArgumentException(vsprintf("%s %s", [
+            "Invalid step configured at index {$index} in [config/suitey.php].",
+            "Valid steps are class names or arrays wth 'class' and 'options' keys.",
+        ]));
     }
 
     private function create($step)
