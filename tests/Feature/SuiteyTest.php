@@ -187,6 +187,37 @@ class SuiteyTest extends TestCase
     }
 
     /** @test */
+    public function invalid_steps_specified_through_the_config_throw_an_error()
+    {
+        $this->app["config"]->set("suitey.steps", [
+            false,
+        ]);
+
+        $result = $this->artisan("test");
+        $result->assertStatus(1);
+        $result->assertOutputContains([
+            "[InvalidArgumentException]",
+            "Invalid step configured at index 0 in [config/suitey.php]. Valid steps are class names or arrays wth 'class' and 'options' keys.",
+       ]);
+    }
+
+    /** @test */
+    public function invalid_steps_specified_through_the_config_at_another_index_throw_an_error()
+    {
+        $this->app["config"]->set("suitey.steps", [
+            \Tests\Fixture\App\Steps\Stub::class,
+            false,
+        ]);
+
+        $result = $this->artisan("test");
+        $result->assertStatus(1);
+        $result->assertOutputContains([
+            "[InvalidArgumentException]",
+            "Invalid step configured at index 1 in [config/suitey.php]. Valid steps are class names or arrays wth 'class' and 'options' keys.",
+       ]);
+    }
+
+    /** @test */
     public function errors_thrown_during_steps_are_caught_and_returned()
     {
         $this->suitey->add(new Steps\RunCode("Throwing error", function () {
