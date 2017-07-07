@@ -6,22 +6,38 @@ use TheCrypticAce\Suitey\Steps;
 
 class SeedDatabaseTest extends TestCase
 {
-    /** @test */
-    public function it_can_run_a_given_seeder()
-    {
-        $this->suitey->add(new Steps\Migrate());
-        $this->suitey->add(new Steps\SeedDatabase("TestSeeder"));
-        $this->suitey->add(new Steps\RunCode("Asserting", function () {
-            $this->assertDatabaseHas("default_tests", ["id" => 2]);
-        }));
+    use RunStepTests;
 
-        $result = $this->artisan("test");
-        $result->assertStatus(0);
-        $result->assertOutputContains([
-            "[1/4] Migrate database",
-            "[2/4] Seed database using TestSeeder",
-            "[3/4] Asserting",
-            "[4/4] Run PHPUnit",
-        ]);
+    protected function name()
+    {
+        return "seed database";
+    }
+
+    protected function steps()
+    {
+        yield "using a given seeder" => [
+            "steps" => [
+                [
+                    "class" => Steps\Migrate::class,
+                    "options" => [],
+                ],
+                [
+                    "class" => Steps\SeedDatabase::class,
+                    "options" => ["class" => "TestSeeder"],
+                ],
+            ],
+
+            "status" => 0,
+            "output" => [
+                "[1/4] Migrate database",
+                "[2/4] Seed database using TestSeeder",
+                "[3/4] Asserting",
+                "[4/4] Run PHPUnit",
+            ],
+
+            "database" => [
+                ["connection" => null, "table" => "default_tests", "attributes" => ["id" => 2]],
+            ],
+        ];
     }
 }
