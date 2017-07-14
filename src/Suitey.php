@@ -22,6 +22,13 @@ class Suitey
      */
     private $steps;
 
+    /**
+     * Whether or not to load steps from the app configuration
+     *
+     * @var bool
+     */
+    private $loadStepsFromConfig = true;
+
     public function __construct(Application $app)
     {
         $this->app = $app;
@@ -40,6 +47,7 @@ class Suitey
     {
         return tap(clone $this, function ($instance) {
             $instance->steps = new Steps;
+            $instance->loadStepsFromConfig = false;
         });
     }
 
@@ -61,9 +69,11 @@ class Suitey
 
     private function stepsFromConfig()
     {
-        return new Steps(
-            $this->app["config"]->get("suitey.steps") ?? []
-        );
+        $steps = $this->loadStepsFromConfig
+            ? $this->app["config"]->get("suitey.steps")
+            : [];
+
+        return new Steps($steps ?? []);;
     }
 
     private function pipeline()

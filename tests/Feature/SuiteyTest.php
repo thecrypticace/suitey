@@ -97,6 +97,22 @@ class SuiteyTest extends TestCase
     }
 
     /** @test */
+    public function it_can_run_only_phpunit_if_requested_when_configured_via_the_config()
+    {
+        $this->app["config"]->set("suitey.steps", [
+            \Tests\Fixture\App\Steps\Stub::class,
+        ]);
+
+        $result = $this->artisan("test", [
+            "--test-only" => true,
+        ]);
+        $result->assertStatus(0);
+        $result->assertOutputContains([
+            "[1/1] Run PHPUnit",
+        ]);
+    }
+
+    /** @test */
     public function it_can_skip_non_phpunit_options()
     {
         $_SERVER["argv"] = ["artisan", "test", "--", "--filter", "stub"];
