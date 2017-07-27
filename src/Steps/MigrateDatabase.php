@@ -6,7 +6,7 @@ use Closure;
 use TheCrypticAce\Suitey\IO;
 use TheCrypticAce\Suitey\Process;
 
-class Migrate implements Step
+class MigrateDatabase implements Step
 {
     private $path;
     private $database;

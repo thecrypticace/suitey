@@ -2,7 +2,7 @@
 
 return [
     "steps" => [
-        // \TheCrypticAce\Suitey\Migrate::class,
+        // \TheCrypticAce\Suitey\MigrateDatabase::class,
         // \TheCrypticAce\Suitey\RefreshDatabase::class,
         // [
         //     "class" => \TheCrypticAce\Suitey\SeedDatabase::class,

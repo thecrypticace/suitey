@@ -4,13 +4,13 @@ namespace Tests\Feature\Steps;
 
 use TheCrypticAce\Suitey\Steps;
 
-class MigrateTest extends TestCase
+class MigrateDatabaseTest extends TestCase
 {
     use RunStepTests;
 
     protected function name()
     {
-        return "migrate";
+        return "migrate database";
     }
 
     protected function steps()
@@ -18,7 +18,7 @@ class MigrateTest extends TestCase
         yield "default database" => [
             "steps" => [
                 [
-                    "class" => Steps\Migrate::class,
+                    "class" => Steps\MigrateDatabase::class,
                     "options" => [],
                 ],
             ],
@@ -38,7 +38,7 @@ class MigrateTest extends TestCase
         yield "custom database" => [
             "steps" => [
                 [
-                    "class" => Steps\Migrate::class,
+                    "class" => Steps\MigrateDatabase::class,
                     "options" => ["database" => "foo"],
                 ],
             ],
@@ -58,7 +58,7 @@ class MigrateTest extends TestCase
         yield "custom database + custom path" => [
             "steps" => [
                 [
-                    "class" => Steps\Migrate::class,
+                    "class" => Steps\MigrateDatabase::class,
                     "options" => ["database" => "bar", "path" => "{$this->relativeFixturePath()}/database/migrations/bar"],
                 ],
             ],
@@ -78,11 +78,11 @@ class MigrateTest extends TestCase
         yield "multiple migrations with duplicate class names" => [
             "steps" => [
                 [
-                    "class" => Steps\Migrate::class,
+                    "class" => Steps\MigrateDatabase::class,
                     "options" => ["database" => "foo", "path" => "{$this->relativeFixturePath()}/database/migrations/dup1"],
                 ],
                 [
-                    "class" => Steps\Migrate::class,
+                    "class" => Steps\MigrateDatabase::class,
                     "options" => ["database" => "bar", "path" => "{$this->relativeFixturePath()}/database/migrations/dup2"],
                 ],
             ],

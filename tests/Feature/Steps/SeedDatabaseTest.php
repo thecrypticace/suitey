@@ -18,7 +18,7 @@ class SeedDatabaseTest extends TestCase
         yield "using a given seeder" => [
             "steps" => [
                 [
-                    "class" => Steps\Migrate::class,
+                    "class" => Steps\MigrateDatabase::class,
                     "options" => [],
                 ],
                 [
