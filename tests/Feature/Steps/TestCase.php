@@ -5,7 +5,7 @@ namespace Tests\Feature\Steps;
 use Tests\TestCase as BaseTestCase;
 use TheCrypticAce\Suitey\Steps;
 
-class TestCase extends BaseTestCase
+abstract class TestCase extends BaseTestCase
 {
     public function tearDown()
     {
