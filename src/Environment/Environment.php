@@ -15,8 +15,10 @@ final class Environment
 
     public static function apply($environment)
     {
-        foreach ($environment as $key => $value) {
-            putenv("{$key}={$value}");
+        foreach ($environment as $key => $values) {
+            foreach ((array) $values as $value) {
+                putenv("{$key}={$value}");
+            }
         }
     }
 }
